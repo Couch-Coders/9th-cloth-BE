@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
 import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
@@ -8,8 +8,8 @@ export class StoresController {
   constructor(private readonly storesService: StoresService) {}
 
   @Post()
-  create(@Body() createStoreDto: CreateStoreDto) {
-    return this.storesService.create(createStoreDto);
+  create(@Request() req, @Body() createStoreDto: CreateStoreDto) {
+    return this.storesService.create(req.user, createStoreDto);
   }
 
   @Get()
@@ -18,17 +18,17 @@ export class StoresController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.storesService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.storesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    return this.storesService.update(+id, updateStoreDto);
+  update(@Param('id') id: number, @Body() updateStoreDto: UpdateStoreDto) {
+    return this.storesService.update(id, updateStoreDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.storesService.remove(+id);
+  softDelete(@Param('id') id: number) {
+    return this.storesService.softDelete(id);
   }
 }
