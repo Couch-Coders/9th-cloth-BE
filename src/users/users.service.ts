@@ -21,7 +21,7 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['styles'] });
+    return this.usersRepository.find({ relations: ['styles', 'stores'] });
   }
 
   findOne(id: number): Promise<User> {
