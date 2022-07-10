@@ -15,13 +15,10 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
-      - name: Setup Seed TypeORM
-        run: npm run seed:run
-
-      - name: Setup Environment to heroku
-        run: sh scripts/heroku-set-env.sh
+      # - name: Setup Seed TypeORM
+      #   run: npm run seed:run
 
       - name: Deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
