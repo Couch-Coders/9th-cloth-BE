@@ -1,6 +1,7 @@
+import { Address } from "src/addresses/entities/address.entity";
 import { Style } from "src/styles/entities/style.entity";
 import { User } from "src/users/entities/user.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Store extends BaseEntity {
@@ -10,10 +11,15 @@ export class Store extends BaseEntity {
   @Column({ unique: true, nullable: true })
   name: string;
 
-  @ManyToOne(() => User, (users) => users.store, {
+  @ManyToOne(() => User, (user) => user.stores, {
     cascade: true
   })
   author?: User;
+
+  @OneToMany(() => Address, (addresses) => addresses.store, {
+    cascade: true
+  })
+  addresses?: Address[];
 
   @ManyToMany(() => Style, (styles) => styles.id, {
     cascade: true
