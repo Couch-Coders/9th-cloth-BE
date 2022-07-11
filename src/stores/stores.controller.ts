@@ -8,8 +8,9 @@ export class StoresController {
   constructor(private readonly storesService: StoresService) {}
 
   @Post()
-  create(@Request() req, @Body() createStoreDto: CreateStoreDto) {
-    return this.storesService.create(req.user, createStoreDto);
+  create(@Request() req: any, @Body() createStoreDto: CreateStoreDto) {
+    // return this.storesService.create(req.user, createStoreDto);
+    return this.storesService.create(createStoreDto)
   }
 
   @Get()
