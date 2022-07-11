@@ -10,9 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthGoogleModule } from './auth-google/auth-google.module';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
-import { User } from './users/entities/user.entity';
-import { Store } from './stores/entities/store.entity';
-import { Style } from './styles/entities/style.entity';
+import { AddressesModule } from './addresses/addresses.module';
 import authConfig from './config/auth.config';
 import googleConfig from './config/google.config';
 
@@ -34,7 +32,8 @@ import googleConfig from './config/google.config';
     UsersModule,
     StoresModule,
     AuthModule,
-    AuthGoogleModule
+    AuthGoogleModule,
+    AddressesModule
   ],
   controllers: [AppController],
   providers: [AppService],
