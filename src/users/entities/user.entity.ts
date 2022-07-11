@@ -1,10 +1,10 @@
 import { Store } from "../../stores/entities/store.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Style } from "src/styles/entities/style.entity";
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ unique: true, nullable: true })
@@ -13,10 +13,8 @@ export class User extends BaseEntity {
   @Column({ unique: true, nullable: true })
   username: string;
 
-  @OneToMany(() => Store, (store) => store.author, {
-    cascade: true
-  })
-  store?: Store;
+  @OneToMany(() => Store, (stores) => stores.author)
+  stores?: Store[];
 
   @ManyToMany(() => Style, (styles) => styles.id, {
     cascade: true
@@ -33,7 +31,7 @@ export class User extends BaseEntity {
   @Column({ type: 'boolean', default: false, nullable: true })
   isSeller: boolean;
 
-  @Column({ nullable: true })
+  @Column({ unique: true, nullable: true })
   socialId: string;
 
   @CreateDateColumn()
