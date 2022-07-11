@@ -5,25 +5,36 @@ import { Repository } from 'typeorm';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Store } from './entities/store.entity';
+import { UsersService } from '../users/users.service';
+import { plainToClass } from 'class-transformer';
+import { Style } from '../styles/entities/style.entity';
 
 @Injectable()
 export class StoresService {
   constructor(
     @InjectRepository(Store)
     private storesRepository: Repository<Store>,
+    private usersService: UsersService,
   ) {}
 
-  create(userData: User, createStoreDto: CreateStoreDto): Promise<Store> {
+  async create(createStoreDto: CreateStoreDto, userData?: User): Promise<Store> {
+    userData = await this.usersService.findByEmail("test@example.com");
+    const styles: Style[] = createStoreDto.styles.map(style => 
+      plainToClass(Style, {
+        id: style,
+      }
+    ));
     return this.storesRepository.save(
       this.storesRepository.create({
         ...createStoreDto,
+        styles,
         author: userData,
       })
     );
   }
 
   findAll(): Promise<Store[]> {
-    return this.storesRepository.find({ relations: ['styles', 'users'] });
+    return this.storesRepository.find({ relations: ['styles', 'author', 'addresses'] });
   }
 
   findOne(id: number): Promise<Store> {
