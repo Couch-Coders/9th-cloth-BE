@@ -13,15 +13,15 @@ export class UpdateAddressDto extends PartialType(CreateAddressDto) {
 
   @IsString()
   @IsOptional()
-  zipCode: string;
+  zonecode: string;
   
   @IsString()
   @IsOptional()
-  address1: string;
+  roadAddress: string;
 
   @IsString()
   @IsOptional()
-  address2: string;
+  jibunAddress: string;
 
   @IsLatitude()
   @IsOptional()

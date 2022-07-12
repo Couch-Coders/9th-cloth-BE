@@ -9,21 +9,19 @@ export class Address extends BaseEntity {
   @Column({ nullable: true })
   name: string;
 
-  @Column({ unique: true, nullable: true })
-  username: string;
-
   @ManyToOne(() => Store, (store) => store.addresses)
   store?: Store;
 
   @Column({ nullable: true })
-  zipCode: string;
+  zonecode: string;
 
   @Column({ nullable: true })
-  address1: string;
+  roadAddress: string;
 
   @Column({ nullable: true })
-  address2: string;
+  jibunAddress: string;
 
+  // https://apis.map.kakao.com/web/documentation/#services_Geocoder_addressSearch
   @Column({ type: 'float',unique: true, nullable: true })
   latitude: number;
 

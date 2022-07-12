@@ -11,15 +11,15 @@ export class CreateAddressDto {
 
   @IsString()
   @IsNotEmpty()
-  zipCode: string;
+  zonecode: string;
   
   @IsString()
   @IsNotEmpty()
-  address1: string;
+  roadAddress: string;
 
   @IsString()
   @IsNotEmpty()
-  address2: string;
+  jibunAddress: string;
 
   @IsLatitude()
   @IsNotEmpty()
