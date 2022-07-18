@@ -16,22 +16,22 @@ export class AuthGoogleService {
   }
 
   async getProfileByToken(
-    loginDto: AuthGoogleLoginDto,
+    query: AuthGoogleLoginDto,
   ): Promise<SocialInterface> {
+    const tokens = await this.google.getToken(query.code);
     const ticket = await this.google.verifyIdToken({
-      idToken: loginDto.idToken,
+      idToken: tokens.tokens.id_token,
       audience: [this.configService.get('google.clientId')],
     });
 
     const data = ticket.getPayload();
-    const id = parseInt(data.sub);
     console.log(data);
 
     return {
       id: data.sub,
       email: data.email,
       username: data.name,
-      profile: data.profile,
+      picture: data.picture,
     };
   }
 }

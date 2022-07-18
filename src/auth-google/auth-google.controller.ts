@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, Get, Param, Query } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthGoogleService } from './auth-google.service';
 import { AuthGoogleLoginDto } from './dto/auth-google-login.dto'
@@ -10,10 +10,10 @@ export class AuthGoogleController {
     public authGoogleService: AuthGoogleService,
   ) {}
 
-  @Post('login')
+  @Get('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginDto: AuthGoogleLoginDto) {
-    const socialData = await this.authGoogleService.getProfileByToken(loginDto);
+  async login(@Query() query: AuthGoogleLoginDto) {
+    const socialData = await this.authGoogleService.getProfileByToken(query);
 
     return this.authService.validateSocialLogin(socialData);
   }
