@@ -12,20 +12,20 @@ export class AuthGoogleService {
     this.google = new OAuth2Client(
       configService.get('google.clientId'),
       configService.get('google.clientSecret'),
+      `${configService.get('app.backendDomain')}/auth/google/login`,
     );
   }
 
   async getProfileByToken(
     query: AuthGoogleLoginDto,
   ): Promise<SocialInterface> {
-    const tokens = await this.google.getToken(query.code);
+    const { tokens } = await this.google.getToken(query.code);
     const ticket = await this.google.verifyIdToken({
-      idToken: tokens.tokens.id_token,
+      idToken: tokens.id_token,
       audience: [this.configService.get('google.clientId')],
     });
 
     const data = ticket.getPayload();
-    console.log(data);
 
     return {
       id: data.sub,
