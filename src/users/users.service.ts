@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   findBySocialId(socialId: string): Promise<User> {
-    return this.usersRepository.findOne({ where: socialId });
+    return this.usersRepository.findOne({ where: { socialId } });
   }
 
   findByEmail(email: string) {
