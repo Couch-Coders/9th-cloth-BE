@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   styles?: Style[];
 
   @Column({ nullable: true })
-  profile: string;
+  picture: string;
 
   @Column({ type: 'boolean', default: false, nullable: true })
   isSeller: boolean;

@@ -21,7 +21,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   styles?: Style[];
 
   @IsOptional()
-  profile: string;
+  picture: string;
   
   @IsOptional()
   isSeller?: boolean;

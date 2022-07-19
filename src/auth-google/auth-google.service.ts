@@ -12,6 +12,7 @@ export class AuthGoogleService {
     this.google = new OAuth2Client(
       configService.get('google.clientId'),
       configService.get('google.clientSecret'),
+      `${configService.get('app.backendDomain')}/auth/google/login`,
     );
   }
 
@@ -24,14 +25,12 @@ export class AuthGoogleService {
     });
 
     const data = ticket.getPayload();
-    const id = parseInt(data.sub);
-    console.log(data);
 
     return {
       id: data.sub,
       email: data.email,
       username: data.name,
-      profile: data.profile,
+      picture: data.picture,
     };
   }
 }

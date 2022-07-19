@@ -32,7 +32,7 @@ export class AuthService {
       user = await this.usersService.create({
         email: socialData.email,
         username: socialData.username,
-        profile: socialData.profile,
+        picture: socialData.picture,
         socialId: socialData.id,
       });
 

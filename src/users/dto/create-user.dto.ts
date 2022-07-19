@@ -18,7 +18,7 @@ export class CreateUserDto {
   @IsOptional()
   styles?: Style[];
 
-  profile: string;
+  picture: string;
   
   @IsOptional()
   isSeller?: boolean;
