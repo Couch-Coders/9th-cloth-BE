@@ -17,11 +17,10 @@ export class AuthGoogleService {
   }
 
   async getProfileByToken(
-    query: AuthGoogleLoginDto,
+    loginDto: AuthGoogleLoginDto,
   ): Promise<SocialInterface> {
-    const { tokens } = await this.google.getToken(query.code);
     const ticket = await this.google.verifyIdToken({
-      idToken: tokens.id_token,
+      idToken: loginDto.idToken,
       audience: [this.configService.get('google.clientId')],
     });
 

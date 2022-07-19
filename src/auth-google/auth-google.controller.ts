@@ -10,10 +10,10 @@ export class AuthGoogleController {
     public authGoogleService: AuthGoogleService,
   ) {}
 
-  @Get('login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Query() query: AuthGoogleLoginDto) {
-    const socialData = await this.authGoogleService.getProfileByToken(query);
+  async login(@Body() loginDto: AuthGoogleLoginDto) {
+    const socialData = await this.authGoogleService.getProfileByToken(loginDto);
 
     return this.authService.validateSocialLogin(socialData);
   }
