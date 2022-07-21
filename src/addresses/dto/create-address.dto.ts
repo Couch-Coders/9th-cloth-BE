@@ -1,11 +1,8 @@
-import { IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString, IsUrl } from "class-validator";
+import { IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString, IsUrl, Validate } from "class-validator";
 import { Store } from "src/stores/entities/store.entity";
+import { IsNotExist } from "src/utils/validators/is-not-exists.validator";
 
 export class CreateAddressDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
   @IsOptional()
   store?: Store;
 
@@ -23,9 +20,15 @@ export class CreateAddressDto {
 
   @IsLatitude()
   @IsNotEmpty()
+  @Validate(IsNotExist, ['Address', 'latitude'], {
+    message: 'latitudeAlreadyExists',
+  })
   latitude: number;
 
   @IsLongitude()
   @IsNotEmpty()
+  @Validate(IsNotExist, ['Address', 'longitude'], {
+    message: 'longitudeAlreadyExists',
+  })
   longitude: number;
 }

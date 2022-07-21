@@ -1,33 +1,36 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsLatitude, IsLongitude, IsOptional, IsString } from 'class-validator';
+import { IsLatitude, IsLongitude, IsNotEmpty, IsOptional, IsString, Validate } from 'class-validator';
 import { Store } from 'src/stores/entities/store.entity';
+import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 import { CreateAddressDto } from './create-address.dto';
 
 export class UpdateAddressDto extends PartialType(CreateAddressDto) {
-  @IsString()
-  @IsOptional()
-  name: string;
-
   @IsOptional()
   store?: Store;
 
   @IsString()
   @IsOptional()
-  zonecode: string;
+  zonecode?: string;
   
   @IsString()
   @IsOptional()
-  roadAddress: string;
+  roadAddress?: string;
 
   @IsString()
   @IsOptional()
-  jibunAddress: string;
+  jibunAddress?: string;
 
   @IsLatitude()
-  @IsOptional()
-  latitude: number;
+  @IsNotEmpty()
+  @Validate(IsNotExist, ['Address', 'latitude'], {
+    message: 'latitudeAlreadyExists',
+  })
+  latitude?: number;
 
   @IsLongitude()
-  @IsOptional()
-  longitude: number;
+  @IsNotEmpty()
+  @Validate(IsNotExist, ['Address', 'longitude'], {
+    message: 'longitudeAlreadyExists',
+  })
+  longitude?: number;
 }
