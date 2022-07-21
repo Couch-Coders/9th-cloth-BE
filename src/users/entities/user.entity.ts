@@ -1,6 +1,16 @@
-import { Store } from "../../stores/entities/store.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Style } from "src/styles/entities/style.entity";
+import { Store } from '../../stores/entities/store.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Style } from 'src/styles/entities/style.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,8 +33,8 @@ export class User extends BaseEntity {
     eager: true,
   })
   @JoinTable({
-    joinColumns:[{name: "user_id"}],
-    inverseJoinColumns:[{name: "style_id"}],
+    joinColumns: [{ name: 'user_id' }],
+    inverseJoinColumns: [{ name: 'style_id' }],
   })
   styles?: Style[];
 

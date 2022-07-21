@@ -16,7 +16,7 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     return this.usersRepository.save(
-      this.usersRepository.create(createUserDto)
+      this.usersRepository.create(createUserDto),
     );
   }
 
@@ -40,11 +40,11 @@ export class UsersService {
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     if (updateUserDto.styles) {
-      updateUserDto.styles = updateUserDto.styles.map(style => 
+      updateUserDto.styles = updateUserDto.styles.map((style) =>
         plainToClass(Style, {
-          id: style
-        }
-      ));
+          id: style,
+        }),
+      );
     }
     return this.usersRepository.save(
       this.usersRepository.create({

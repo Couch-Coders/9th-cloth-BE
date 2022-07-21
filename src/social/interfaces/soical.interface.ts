@@ -3,4 +3,4 @@ export interface SocialInterface {
   email: string;
   username: string;
   picture: string;
-};
+}

@@ -1,11 +1,19 @@
-import { Store } from "../../stores/entities/store.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Store } from '../../stores/entities/store.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Address extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @ManyToOne(() => Store, (store) => store.addresses, {
     onDelete: 'CASCADE',
   })

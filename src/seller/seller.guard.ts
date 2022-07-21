@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  Inject,
+} from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
@@ -13,7 +18,9 @@ export class SellerGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user: User = await this.usersService.findOne(request.user.id);
     const storeId: number = parseInt(request.params['id']);
-    return user.isSeller === true
-        && user.stores?.some(store => store.id === storeId);
+    return (
+      user.isSeller === true &&
+      user.stores?.some((store) => store.id === storeId)
+    );
   }
 }

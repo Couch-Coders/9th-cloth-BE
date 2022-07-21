@@ -1,5 +1,11 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsMobilePhone, IsNotEmpty, IsOptional, IsString, IsUrl, Validate } from 'class-validator';
+import {
+  IsMobilePhone,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Validate,
+} from 'class-validator';
 import { Address } from 'src/addresses/entities/address.entity';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 import { Style } from '../../styles/entities/style.entity';
@@ -24,7 +30,7 @@ export class UpdateStoreDto extends PartialType(CreateStoreDto) {
   @IsUrl()
   @IsOptional()
   thumbnail: string;
-  
+
   @IsOptional()
   openTime: string;
 

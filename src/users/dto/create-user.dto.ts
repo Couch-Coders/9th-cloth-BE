@@ -12,7 +12,7 @@ export class CreateUserDto {
     message: 'emailAlreadyExists',
   })
   email: string;
-  
+
   @IsNotEmpty()
   @Validate(IsNotExist, ['User', 'username'], {
     message: 'usernameAlreadyExists',
@@ -26,7 +26,7 @@ export class CreateUserDto {
   styles?: Style[];
 
   picture: string;
-  
+
   @IsOptional()
   isSeller?: boolean;
 

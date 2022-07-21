@@ -20,13 +20,8 @@ import { QueryErrorFilter } from './utils/query-error.filter';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [
-        appConfig,
-        authConfig,
-        googleConfig,
-        databaseConfig,
-      ],
-      envFilePath: ['.env']
+      load: [appConfig, authConfig, googleConfig, databaseConfig],
+      envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
@@ -35,7 +30,7 @@ import { QueryErrorFilter } from './utils/query-error.filter';
     StoresModule,
     AuthModule,
     AuthGoogleModule,
-    AddressesModule
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { SellerGuard } from 'src/seller/seller.guard';
 import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
@@ -13,7 +21,7 @@ export class AddressesController {
 
   @Post()
   async create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {
-    return this.addressesService.create(createAddressDto)
+    return this.addressesService.create(createAddressDto);
   }
 
   @Get()
@@ -27,7 +35,10 @@ export class AddressesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateAddressDto: UpdateAddressDto): Promise<Address> {
+  update(
+    @Param('id') id: number,
+    @Body() updateAddressDto: UpdateAddressDto,
+  ): Promise<Address> {
     return this.addressesService.update(id, updateAddressDto);
   }
 

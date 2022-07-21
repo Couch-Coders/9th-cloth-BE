@@ -1,7 +1,18 @@
-import { Address } from "src/addresses/entities/address.entity";
-import { Style } from "src/styles/entities/style.entity";
-import { User } from "src/users/entities/user.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Address } from 'src/addresses/entities/address.entity';
+import { Style } from 'src/styles/entities/style.entity';
+import { User } from 'src/users/entities/user.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Store extends BaseEntity {
@@ -27,8 +38,8 @@ export class Store extends BaseEntity {
     cascade: true,
   })
   @JoinTable({
-    joinColumns:[{name: "store_id"}],
-    inverseJoinColumns:[{name: "style_id"}],
+    joinColumns: [{ name: 'store_id' }],
+    inverseJoinColumns: [{ name: 'style_id' }],
   })
   styles?: Style[];
 

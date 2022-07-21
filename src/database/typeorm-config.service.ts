@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
-  
+
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: this.configService.get('database.type'),
@@ -33,12 +33,13 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         // max connection pool size
         max: this.configService.get('database.maxConnections'),
         ssl: this.configService.get('database.sslEnabled')
-        ? {
-            rejectUnauthorized: this.configService.get(
-              'database.rejectUnauthorized',
-            ),
-        } : undefined,
-      }
+          ? {
+              rejectUnauthorized: this.configService.get(
+                'database.rejectUnauthorized',
+              ),
+            }
+          : undefined,
+      },
     } as TypeOrmModuleOptions;
-  };
+  }
 }

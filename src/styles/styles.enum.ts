@@ -10,4 +10,4 @@ export enum StyleEnum {
   'dandy' = 9,
   'classic' = 10,
   'workwear' = 11,
- };
+}

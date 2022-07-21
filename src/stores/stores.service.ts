@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Store } from './entities/store.entity';
@@ -23,22 +23,26 @@ export class StoresService {
   ) {}
 
   async create(createStoreDto: CreateStoreDto, userData: User): Promise<Store> {
-    const addresses: Address[] = (createStoreDto.addresses) ? await this.addAddresses(createStoreDto) : null;
-    const styles: Style[] = createStoreDto.styles.map(style => 
+    const addresses: Address[] = createStoreDto.addresses
+      ? await this.addAddresses(createStoreDto)
+      : null;
+    const styles: Style[] = createStoreDto.styles.map((style) =>
       plainToClass(Style, {
         id: style,
-      }
-    ));
-    userData.isSeller = (await this.usersService.update(userData.id, {
-      isSeller: true,
-    })).isSeller;
+      }),
+    );
+    userData.isSeller = (
+      await this.usersService.update(userData.id, {
+        isSeller: true,
+      })
+    ).isSeller;
     return this.storesRepository.save(
       this.storesRepository.create({
         ...createStoreDto,
         styles,
         addresses,
         author: userData,
-      })
+      }),
     );
   }
 
@@ -51,9 +55,11 @@ export class StoresService {
   }
 
   async update(id: number, updateStoreDto: UpdateStoreDto): Promise<Store> {
-    const addresses: Address[] = (updateStoreDto.addresses) ? await this.addAddresses(updateStoreDto) : null;
+    const addresses: Address[] = updateStoreDto.addresses
+      ? await this.addAddresses(updateStoreDto)
+      : null;
     // if (addresses) {
-    //   addresses.map(async address => 
+    //   addresses.map(async address =>
     //     this.addressesService.update(address.id, {
     //       store: await this.storesRepository.findOne(id),
     //     }
@@ -65,7 +71,7 @@ export class StoresService {
         id,
         ...updateStoreDto,
         addresses,
-      })
+      }),
     );
   }
 
@@ -73,7 +79,7 @@ export class StoresService {
     this.storesRepository.softDelete(id);
   }
 
-  addAddresses(storeDto: CreateStoreDto | UpdateStoreDto): Promise<Address[]>{
+  addAddresses(storeDto: CreateStoreDto | UpdateStoreDto): Promise<Address[]> {
     return Promise.all(
       storeDto.addresses.map(async (address: CreateAddressDto | number) => {
         if (typeof address === 'number') {
@@ -82,13 +88,15 @@ export class StoresService {
           const newAddressDto = plainToClass(CreateAddressDto, address);
           const errors = await validate(newAddressDto);
           if (errors.length > 0) {
-            const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
+            const message = errors
+              .map((error: ValidationError) => Object.values(error.constraints))
+              .join(', ');
             throw new BadRequestException(message);
           } else {
             return this.addressesService.create(newAddressDto);
           }
         }
-      })
+      }),
     );
   }
 }
