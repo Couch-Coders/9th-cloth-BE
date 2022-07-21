@@ -5,10 +5,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGenerat
 export class Address extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ nullable: true })
-  name: string;
-
+  
   @ManyToOne(() => Store, (store) => store.addresses)
   store?: Store;
 
@@ -22,7 +19,7 @@ export class Address extends BaseEntity {
   jibunAddress: string;
 
   // https://apis.map.kakao.com/web/documentation/#services_Geocoder_addressSearch
-  @Column({ type: 'float',unique: true, nullable: true })
+  @Column({ type: 'float', unique: true, nullable: true })
   latitude: number;
 
   @Column({ type: 'float', unique: true, nullable: true })
