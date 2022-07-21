@@ -39,8 +39,9 @@ export class AuthService {
       user = await this.usersService.findOne(user.id);
     }
 
-    const jwtToken = await this.jwtService.sign({
+    const jwtToken = this.jwtService.sign({
       id: user.id,
+      isSeller: user.isSeller,
     });
 
     return {
