@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsMilitaryTime,
   IsMobilePhone,
@@ -13,6 +14,7 @@ import { Style } from '../../styles/entities/style.entity';
 import { User } from '../../users/entities/user.entity';
 
 export class CreateStoreDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   @Validate(IsNotExist, ['Store', 'name'], {
@@ -20,31 +22,39 @@ export class CreateStoreDto {
   })
   name: string;
 
+  @ApiProperty({ type: () => User })
   @IsOptional()
   author?: User;
 
+  @ApiProperty({ type: () => Style })
   @IsNotEmpty()
   styles: Style[];
 
+  @ApiProperty({ type: () => Address })
   @IsOptional()
   addresses?: Address[] | number[];
 
+  @ApiProperty()
   @IsUrl()
   @IsNotEmpty()
   thumbnail: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsMilitaryTime()
   openTime: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsMilitaryTime()
   closeTime: string;
 
+  @ApiProperty()
   @IsMobilePhone()
   @IsNotEmpty()
   phoneNumber: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   contents: string;
 }
