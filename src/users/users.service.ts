@@ -21,11 +21,11 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['styles', 'stores'] });
+    return this.usersRepository.find();
   }
 
   findOne(id: number): Promise<User> {
-    return this.usersRepository.findOne({ id });
+    return this.usersRepository.findOne({ id }, { relations: ['stores'] });
   }
 
   findBySocialId(socialId: string): Promise<User> {
