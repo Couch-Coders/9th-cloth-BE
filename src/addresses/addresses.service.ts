@@ -12,12 +12,9 @@ export class AddressesService {
   constructor(
     @InjectRepository(Address)
     private addressesRepository: Repository<Address>,
-    private storesService: StoresService,
   ) {}
   
   async create(createAddressDto: CreateAddressDto): Promise<Address> {
-    const storeData: Store = await this.storesService.findOne(createAddressDto.store.id);
-    createAddressDto.store = storeData
     return this.addressesRepository.save(
       this.addressesRepository.create(createAddressDto)
     );

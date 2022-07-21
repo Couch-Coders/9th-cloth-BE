@@ -7,7 +7,6 @@ import { StoresModule } from 'src/stores/stores.module';
 
 @Module({
   imports: [
-    StoresModule,
     TypeOrmModule.forFeature([Address]),
   ],
   controllers: [AddressesController],
