@@ -13,11 +13,14 @@ export class User extends BaseEntity {
   @Column({ unique: true, nullable: true })
   username: string;
 
-  @OneToMany(() => Store, (stores) => stores.author)
+  @OneToMany(() => Store, (stores) => stores.author, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   stores?: Store[];
 
   @ManyToMany(() => Style, (styles) => styles.id, {
-    cascade: true
+    eager: true,
   })
   @JoinTable({
     joinColumns:[{name: "user_id"}],
