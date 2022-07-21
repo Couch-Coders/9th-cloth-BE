@@ -13,6 +13,8 @@ import databaseConfig from './config/database.config';
 import { AddressesModule } from './addresses/addresses.module';
 import authConfig from './config/auth.config';
 import googleConfig from './config/google.config';
+import { APP_FILTER } from '@nestjs/core';
+import { QueryErrorFilter } from './utils/query-error.filter';
 
 @Module({
   imports: [
@@ -36,6 +38,12 @@ import googleConfig from './config/google.config';
     AddressesModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: QueryErrorFilter,
+    },
+  ],
 })
 export class AppModule {}
