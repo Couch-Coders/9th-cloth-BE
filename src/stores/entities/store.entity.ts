@@ -12,17 +12,19 @@ export class Store extends BaseEntity {
   name: string;
 
   @ManyToOne(() => User, (user) => user.stores, {
-    cascade: true
+    onDelete: 'SET NULL',
   })
   author?: User;
 
   @OneToMany(() => Address, (addresses) => addresses.store, {
-    cascade: true
+    cascade: true,
+    onDelete: 'SET NULL',
   })
   addresses?: Address[];
 
   @ManyToMany(() => Style, (styles) => styles.id, {
-    cascade: true
+    eager: true,
+    cascade: true,
   })
   @JoinTable({
     joinColumns:[{name: "store_id"}],
