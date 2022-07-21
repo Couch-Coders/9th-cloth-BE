@@ -6,7 +6,9 @@ export class Address extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
   
-  @ManyToOne(() => Store, (store) => store.addresses)
+  @ManyToOne(() => Store, (store) => store.addresses, {
+    onDelete: 'CASCADE',
+  })
   store?: Store;
 
   @Column({ nullable: true })
