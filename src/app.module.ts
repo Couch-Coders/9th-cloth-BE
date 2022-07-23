@@ -15,12 +15,15 @@ import authConfig from './config/auth.config';
 import googleConfig from './config/google.config';
 import { APP_FILTER } from '@nestjs/core';
 import { QueryErrorFilter } from './utils/query-error.filter';
+import { FilesModule } from './files/files.module';
+import cloudinaryConfig from './config/cloudinary.config';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, authConfig, googleConfig, databaseConfig],
+      load: [appConfig, authConfig, googleConfig, databaseConfig, cloudinaryConfig],
       envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({
@@ -31,6 +34,8 @@ import { QueryErrorFilter } from './utils/query-error.filter';
     AuthModule,
     AuthGoogleModule,
     AddressesModule,
+    CloudinaryModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [
