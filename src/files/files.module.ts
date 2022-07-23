@@ -1,11 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { FileEntity } from './entities/file.entity';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FileEntity])],
+  imports: [
+    forwardRef(() => CloudinaryModule),
+    TypeOrmModule.forFeature([FileEntity]),
+  ],
   controllers: [FilesController],
   providers: [FilesService],
   exports: [FilesService],
