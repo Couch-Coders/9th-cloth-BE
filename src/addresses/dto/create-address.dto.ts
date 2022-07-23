@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsLatitude,
   IsLongitude,
@@ -13,18 +14,22 @@ export class CreateAddressDto {
   @IsOptional()
   store?: Store;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   zonecode: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   roadAddress: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   jibunAddress: string;
 
+  @ApiProperty({ type: 'latitude' })
   @IsLatitude()
   @IsNotEmpty()
   @Validate(IsNotExist, ['Address', 'latitude'], {
@@ -32,6 +37,7 @@ export class CreateAddressDto {
   })
   latitude: number;
 
+  @ApiProperty({ type: 'longitude' })
   @IsLongitude()
   @IsNotEmpty()
   @Validate(IsNotExist, ['Address', 'longitude'], {

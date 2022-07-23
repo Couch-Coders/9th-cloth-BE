@@ -14,8 +14,11 @@ import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { SellerGuard } from 'src/seller/seller.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
+@ApiTags('Stores')
 @Controller('stores')
 export class StoresController {
   constructor(private readonly storesService: StoresService) {}

@@ -11,15 +11,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Style } from 'src/styles/entities/style.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User extends BaseEntity {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   email: string;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   username: string;
 
@@ -38,12 +42,15 @@ export class User extends BaseEntity {
   })
   styles?: Style[];
 
+  @ApiProperty()
   @Column({ nullable: true })
   picture: string;
 
+  @ApiProperty()
   @Column({ type: 'boolean', default: false, nullable: true })
   isSeller: boolean;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   socialId: string;
 

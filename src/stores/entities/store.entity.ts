@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Address } from 'src/addresses/entities/address.entity';
 import { Style } from 'src/styles/entities/style.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -16,9 +17,11 @@ import {
 
 @Entity()
 export class Store extends BaseEntity {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   name: string;
 
@@ -43,18 +46,23 @@ export class Store extends BaseEntity {
   })
   styles?: Style[];
 
+  @ApiProperty()
   @Column({ nullable: true })
   thumbnail: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   openTime: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   closeTime: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   phoneNumber: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   contents: string;
 
