@@ -1,15 +1,22 @@
-import { Store } from "../../stores/entities/store.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Store } from '../../stores/entities/store.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Address extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  name: string;
-
-  @ManyToOne(() => Store, (store) => store.addresses)
+  @ManyToOne(() => Store, (store) => store.addresses, {
+    onDelete: 'CASCADE',
+  })
   store?: Store;
 
   @Column({ nullable: true })
@@ -22,7 +29,7 @@ export class Address extends BaseEntity {
   jibunAddress: string;
 
   // https://apis.map.kakao.com/web/documentation/#services_Geocoder_addressSearch
-  @Column({ type: 'float',unique: true, nullable: true })
+  @Column({ type: 'float', unique: true, nullable: true })
   latitude: number;
 
   @Column({ type: 'float', unique: true, nullable: true })

@@ -1,16 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { Address } from './entities/address.entity';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
   @Post()
   async create(@Body() createAddressDto: CreateAddressDto): Promise<Address> {
-    return this.addressesService.create(createAddressDto)
+    return this.addressesService.create(createAddressDto);
   }
 
   @Get()
@@ -24,7 +35,10 @@ export class AddressesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateAddressDto: UpdateAddressDto): Promise<Address> {
+  update(
+    @Param('id') id: number,
+    @Body() updateAddressDto: UpdateAddressDto,
+  ): Promise<Address> {
     return this.addressesService.update(id, updateAddressDto);
   }
 

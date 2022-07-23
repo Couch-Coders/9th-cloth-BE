@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Store } from 'src/stores/entities/store.entity';
-import { StoresService } from 'src/stores/stores.service';
 import { Repository } from 'typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
@@ -12,14 +10,11 @@ export class AddressesService {
   constructor(
     @InjectRepository(Address)
     private addressesRepository: Repository<Address>,
-    private storesService: StoresService,
   ) {}
-  
+
   async create(createAddressDto: CreateAddressDto): Promise<Address> {
-    const storeData: Store = await this.storesService.findOne(createAddressDto.store.id);
-    createAddressDto.store = storeData
     return this.addressesRepository.save(
-      this.addressesRepository.create(createAddressDto)
+      this.addressesRepository.create(createAddressDto),
     );
   }
 
