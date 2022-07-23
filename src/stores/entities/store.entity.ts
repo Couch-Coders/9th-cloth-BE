@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Address } from 'src/addresses/entities/address.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 import { Style } from 'src/styles/entities/style.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -47,8 +48,14 @@ export class Store extends BaseEntity {
   styles?: Style[];
 
   @ApiProperty()
-  @Column({ nullable: true })
-  thumbnail: string;
+  @ManyToMany(() => FileEntity, (files) => files.id, {
+    eager: true,
+  })
+  @JoinTable({
+    joinColumns: [{ name: 'store_id' }],
+    inverseJoinColumns: [{ name: 'file_id' }]
+  })
+  thumbnails: FileEntity[];
 
   @ApiProperty()
   @Column({ nullable: true })

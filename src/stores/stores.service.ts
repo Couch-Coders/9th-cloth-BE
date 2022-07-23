@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ import { Address } from 'src/addresses/entities/address.entity';
 import { AddressesService } from 'src/addresses/addresses.service';
 import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
 import { validate, ValidationError } from 'class-validator';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class StoresService {
@@ -20,6 +21,7 @@ export class StoresService {
     private storesRepository: Repository<Store>,
     private usersService: UsersService,
     private addressesService: AddressesService,
+    private filesService: FilesService,
   ) {}
 
   async create(createStoreDto: CreateStoreDto, userData: User): Promise<Store> {
@@ -36,11 +38,13 @@ export class StoresService {
         isSeller: true,
       })
     ).isSeller;
+    const thumbnails = await this.filesService.findById(createStoreDto.thumbnails);
     return this.storesRepository.save(
       this.storesRepository.create({
         ...createStoreDto,
         styles,
         addresses,
+        thumbnails,
         author: userData,
       }),
     );
@@ -58,14 +62,9 @@ export class StoresService {
     const addresses: Address[] = updateStoreDto.addresses
       ? await this.addAddresses(updateStoreDto)
       : null;
-    // if (addresses) {
-    //   addresses.map(async address =>
-    //     this.addressesService.update(address.id, {
-    //       store: await this.storesRepository.findOne(id),
-    //     }
-    //   ));
-    //   return this.storesRepository.findOne(id);
-    // }
+    if (updateStoreDto.thumbnails) {
+      updateStoreDto.thumbnails = await this.filesService.findById(updateStoreDto.thumbnails);
+    }
     return this.storesRepository.save(
       this.storesRepository.create({
         id,

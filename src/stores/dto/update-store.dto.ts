@@ -7,6 +7,7 @@ import {
   Validate,
 } from 'class-validator';
 import { Address } from 'src/addresses/entities/address.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 import { Style } from '../../styles/entities/style.entity';
 import { User } from '../../users/entities/user.entity';
@@ -31,10 +32,9 @@ export class UpdateStoreDto extends PartialType(CreateStoreDto) {
   @IsOptional()
   addresses?: Address[] | number[];
 
-  @ApiProperty()
-  @IsUrl()
+  @ApiProperty({ type: () => FileEntity })
   @IsOptional()
-  thumbnail: string;
+  thumbnails: FileEntity[];
 
   @ApiProperty()
   @IsOptional()

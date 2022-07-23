@@ -5,10 +5,11 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUrl,
+  IsUUID,
   Validate,
 } from 'class-validator';
 import { Address } from 'src/addresses/entities/address.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 import { Style } from '../../styles/entities/style.entity';
 import { User } from '../../users/entities/user.entity';
@@ -34,10 +35,9 @@ export class CreateStoreDto {
   @IsOptional()
   addresses?: Address[] | number[];
 
-  @ApiProperty()
-  @IsUrl()
-  @IsNotEmpty()
-  thumbnail: string;
+  @ApiProperty({ type: () => FileEntity })
+  @IsOptional()
+  thumbnails: FileEntity[];
 
   @ApiProperty()
   @IsNotEmpty()
