@@ -10,7 +10,7 @@ import { FilesService } from './files.service';
 @Controller('files')
 export class FilesController {
   constructor(
-    // private readonly cloudinaryService: CloudinaryService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   @ApiBearerAuth()
@@ -19,6 +19,6 @@ export class FilesController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('file', 10))
   async uploadFile(@UploadedFiles() files: Express.Multer.File[], @Query() fileType: FileTypeDto) {
-    // return this.cloudinaryService.uploadImages(files, fileType.type);
+    return this.cloudinaryService.uploadImages(files, fileType.type);
   }
 }
