@@ -13,6 +13,7 @@ import { AddressesService } from 'src/addresses/addresses.service';
 import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
 import { validate, ValidationError } from 'class-validator';
 import { FilesService } from 'src/files/files.service';
+import { IPaginationOptions } from 'src/utils/types/pagination-options';
 
 @Injectable()
 export class StoresService {
@@ -50,12 +51,19 @@ export class StoresService {
     );
   }
 
-  findAll(): Promise<Store[]> {
-    return this.storesRepository.find({ relations: ['author', 'addresses'] });
+  findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Store[]>  {
+    return this.storesRepository.find({
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+      select: [
+        'id',
+        'name',
+      ]
+    });
   }
 
-  findOne(id: number): Promise<Store> {
-    return this.storesRepository.findOne({ id });
+  findOne(name: string): Promise<Store> {
+    return this.storesRepository.findOne({ name }, { relations: ['addresses'] });
   }
 
   async update(id: number, updateStoreDto: UpdateStoreDto): Promise<Store> {
