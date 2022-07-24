@@ -18,6 +18,7 @@ import { QueryErrorFilter } from './utils/query-error.filter';
 import { FilesModule } from './files/files.module';
 import cloudinaryConfig from './config/cloudinary.config';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ClothesModule } from './clothes/clothes.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AddressesModule,
     CloudinaryModule,
     FilesModule,
+    ClothesModule,
   ],
   controllers: [AppController],
   providers: [
