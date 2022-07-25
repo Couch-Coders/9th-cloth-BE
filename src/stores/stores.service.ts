@@ -14,6 +14,7 @@ import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
 import { validate, ValidationError } from 'class-validator';
 import { FilesService } from 'src/files/files.service';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
+import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class StoresService {
@@ -39,7 +40,7 @@ export class StoresService {
         isSeller: true,
       })
     ).isSeller;
-    const thumbnails = await this.filesService.findById(createStoreDto.thumbnails);
+    const thumbnails = await Promise.all(createStoreDto.thumbnails.map(id => this.filesService.findById(id)));
     return this.storesRepository.save(
       this.storesRepository.create({
         ...createStoreDto,
@@ -70,13 +71,15 @@ export class StoresService {
     const addresses: Address[] = updateStoreDto.addresses
       ? await this.addAddresses(updateStoreDto)
       : null;
+    let thumbnails: FileEntity[];
     if (updateStoreDto.thumbnails) {
-      updateStoreDto.thumbnails = await this.filesService.findById(updateStoreDto.thumbnails);
+      thumbnails = await Promise.all(updateStoreDto.thumbnails.map(id => this.filesService.findById(id)));
     }
     return this.storesRepository.save(
       this.storesRepository.create({
         id,
         ...updateStoreDto,
+        thumbnails,
         addresses,
       }),
     );

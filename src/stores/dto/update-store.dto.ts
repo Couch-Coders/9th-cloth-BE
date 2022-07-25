@@ -32,9 +32,9 @@ export class UpdateStoreDto extends PartialType(CreateStoreDto) {
   @IsOptional()
   addresses?: Address[] | number[];
 
-  @ApiProperty({ type: () => FileEntity })
+  @ApiProperty()
   @IsOptional()
-  thumbnails: FileEntity[];
+  thumbnails: string[];
 
   @ApiProperty()
   @IsOptional()
