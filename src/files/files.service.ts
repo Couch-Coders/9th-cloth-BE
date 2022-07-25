@@ -19,7 +19,7 @@ export class FilesService {
     );
   }
 
-  findById(fileData: FileEntity[]): Promise<FileEntity[]> {
-    return Promise.all(fileData.map(file => this.fileRepository.findOne({ where: { id: file.id } })));
+  findById(id: string): Promise<FileEntity> {
+    return this.fileRepository.findOne({ where: { id: id } });
   }
 }
