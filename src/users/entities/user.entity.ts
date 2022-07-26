@@ -33,16 +33,6 @@ export class User extends BaseEntity {
   })
   stores?: Store[];
 
-  @ManyToMany(() => Style, (styles) => styles.id, {
-    eager: true,
-  })
-  @JoinTable({
-    name: 'users_styles',
-    joinColumns: [{ name: 'user_id' }],
-    inverseJoinColumns: [{ name: 'style_id' }],
-  })
-  styles?: Style[];
-
   @ApiProperty()
   @Column({ nullable: true })
   picture: string;

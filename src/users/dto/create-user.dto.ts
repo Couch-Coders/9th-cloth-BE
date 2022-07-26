@@ -26,10 +26,6 @@ export class CreateUserDto {
   @IsOptional()
   store?: Store;
 
-  @ApiProperty({ type: () => Style })
-  @IsOptional()
-  styles?: Style[];
-
   @ApiProperty()
   @IsUrl()
   picture: string;

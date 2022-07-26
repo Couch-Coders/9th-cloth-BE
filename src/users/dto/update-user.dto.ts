@@ -28,10 +28,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   store?: Store;
 
-  @ApiProperty({ type: () => Style })
-  @IsOptional()
-  styles?: Style[];
-
   @ApiProperty()
   @IsOptional()
   @IsUrl()
