@@ -34,7 +34,7 @@ export class Cloth extends BaseEntity {
     cascade: true,
   })
   @JoinTable({
-    name: 'clothes_files',
+    name: 'clothes_styles',
     joinColumns: [{ name: 'cloth_id' }],
     inverseJoinColumns: [{ name: 'style_id' }],
   })
