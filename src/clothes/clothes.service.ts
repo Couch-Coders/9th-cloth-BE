@@ -1,26 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClotheDto } from './dto/create-clothe.dto';
-import { UpdateClotheDto } from './dto/update-clothe.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions } from 'src/utils/types/pagination-options';
+import { Repository } from 'typeorm';
+import { CreateClothDto } from './dto/create-cloth.dto';
+import { UpdateClothDto } from './dto/update-cloth.dto';
+import { Cloth } from './entities/cloth.entity';
 
 @Injectable()
 export class ClothesService {
-  create(createClotheDto: CreateClotheDto) {
-    return 'This action adds a new clothe';
+  constructor(
+    @InjectRepository(Cloth) 
+    private clothesRepository: Repository<Cloth>
+  ) {}
+
+  create(createClothDto: CreateClothDto): Promise<Cloth> {
+    return this.clothesRepository.save(
+      this.clothesRepository.create({
+        ...createClothDto,
+      }),
+    );
   }
 
-  findAll() {
-    return `This action returns all clothes`;
+  findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Cloth[]>  {
+    return this.clothesRepository.find({
+      skip: (paginationOptions.page - 1) * paginationOptions.limit,
+      take: paginationOptions.limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} clothe`;
+  findOne(id: string): Promise<Cloth> {
+    return this.clothesRepository.findOne({ id });
   }
 
-  update(id: number, updateClotheDto: UpdateClotheDto) {
-    return `This action updates a #${id} clothe`;
+  async update(id: string, updateClothDto: UpdateClothDto): Promise<Cloth> {
+    return this.clothesRepository.save(
+      this.clothesRepository.create({
+        id,
+        ...updateClothDto,
+      }),
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} clothe`;
+  async softDelete(id: string): Promise<void> {
+    this.clothesRepository.softDelete(id);
   }
 }

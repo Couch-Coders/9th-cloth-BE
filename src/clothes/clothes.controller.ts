@@ -1,34 +1,54 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, DefaultValuePipe, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { SellerGuard } from 'src/seller/seller.guard';
+import { infinityPagination } from 'src/utils/infinity-pagination';
 import { ClothesService } from './clothes.service';
-import { CreateClotheDto } from './dto/create-clothe.dto';
-import { UpdateClotheDto } from './dto/update-clothe.dto';
+import { CreateClothDto } from './dto/create-cloth.dto';
+import { UpdateClothDto } from './dto/update-cloth.dto';
 
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'), SellerGuard)
+@ApiTags('Clothes')
 @Controller('clothes')
 export class ClothesController {
   constructor(private readonly clothesService: ClothesService) {}
 
   @Post()
-  create(@Body() createClotheDto: CreateClotheDto) {
-    return this.clothesService.create(createClotheDto);
+  create(@Body() createClothDto: CreateClothDto) {
+    return this.clothesService.create(createClothDto);
   }
 
   @Get()
-  findAll() {
-    return this.clothesService.findAll();
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    if (limit > 25) {
+      limit = 25;
+    }
+
+    return infinityPagination(
+      await this.clothesService.findManyWithPagination({
+        page,
+        limit
+      }),
+      { page, limit },
+    );
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.clothesService.findOne(+id);
+    return this.clothesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClotheDto: UpdateClotheDto) {
-    return this.clothesService.update(+id, updateClotheDto);
+  update(@Param('id') id: string, @Body() updateClothDto: UpdateClothDto) {
+    return this.clothesService.update(id, updateClothDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clothesService.remove(+id);
+  softDelete(@Param('id') id: string) {
+    return this.clothesService.softDelete(id);
   }
 }
