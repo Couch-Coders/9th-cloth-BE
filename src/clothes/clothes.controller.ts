@@ -1,14 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, DefaultValuePipe, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { SellerGuard } from 'src/seller/seller.guard';
 import { infinityPagination } from 'src/utils/infinity-pagination';
 import { ClothesService } from './clothes.service';
 import { CreateClothDto } from './dto/create-cloth.dto';
 import { UpdateClothDto } from './dto/update-cloth.dto';
 
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'), SellerGuard)
+@UseGuards(AuthGuard('jwt'))
 @ApiTags('Clothes')
 @Controller('clothes')
 export class ClothesController {
@@ -20,21 +19,8 @@ export class ClothesController {
   }
 
   @Get()
-  async findAll(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-  ) {
-    if (limit > 25) {
-      limit = 25;
-    }
-
-    return infinityPagination(
-      await this.clothesService.findManyWithPagination({
-        page,
-        limit
-      }),
-      { page, limit },
-    );
+  async findAll() {
+    return this.clothesService.findAll();
   }
 
   @Get(':id')
