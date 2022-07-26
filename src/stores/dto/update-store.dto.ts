@@ -7,6 +7,7 @@ import {
   Validate,
 } from 'class-validator';
 import { Address } from 'src/addresses/entities/address.entity';
+import { Cloth } from 'src/clothes/entities/cloth.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 import { Style } from '../../styles/entities/style.entity';
@@ -35,6 +36,10 @@ export class UpdateStoreDto extends PartialType(CreateStoreDto) {
   @ApiProperty()
   @IsOptional()
   thumbnails: string[];
+
+  @ApiProperty({ type: () => Cloth })
+  @IsOptional()
+  clothes?: Cloth[]
 
   @ApiProperty()
   @IsOptional()
