@@ -19,6 +19,7 @@ import { SellerGuard } from 'src/seller/seller.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { infinityPagination } from 'src/utils/infinity-pagination';
+import { CreateClothDto } from 'src/clothes/dto/create-cloth.dto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
@@ -30,6 +31,11 @@ export class StoresController {
   @Post()
   create(@Request() req: any, @Body() createStoreDto: CreateStoreDto) {
     return this.storesService.create(createStoreDto, req.user);
+  }
+
+  @Post(':id/cloth')
+  createCloth(@Param('id') storeId: number, @Body() createClothDto: CreateClothDto) {
+    return this.storesService.createCloth(storeId, createClothDto);
   }
 
   @Get()

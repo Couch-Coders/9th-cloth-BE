@@ -15,6 +15,9 @@ import { validate, ValidationError } from 'class-validator';
 import { FilesService } from 'src/files/files.service';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { ClothesService } from 'src/clothes/clothes.service';
+import { CreateClothDto } from 'src/clothes/dto/create-cloth.dto';
+import { Cloth } from 'src/clothes/entities/cloth.entity';
 
 @Injectable()
 export class StoresService {
@@ -24,6 +27,7 @@ export class StoresService {
     private usersService: UsersService,
     private addressesService: AddressesService,
     private filesService: FilesService,
+    private clothesService: ClothesService,
   ) {}
 
   async create(createStoreDto: CreateStoreDto, userData: User): Promise<Store> {
@@ -52,6 +56,18 @@ export class StoresService {
     );
   }
 
+  async createCloth(storeId: number, createClothDto: CreateClothDto): Promise<Cloth> {
+    createClothDto.store = await this.storesRepository.findOne(storeId);
+    createClothDto.styles = createClothDto.styles.map((style) =>
+      plainToClass(Style, {
+        id: style,
+      }),
+    );
+    const newClothData: Omit<Cloth, 'store'> = await this.clothesService.create(createClothDto);
+    console.log(newClothData);
+    return newClothData;
+  }
+
   findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Store[]>  {
     return this.storesRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
@@ -64,7 +80,7 @@ export class StoresService {
   }
 
   findOne(name: string): Promise<Store> {
-    return this.storesRepository.findOne({ name }, { relations: ['addresses'] });
+    return this.storesRepository.findOne({ name }, { relations: ['addresses', 'clothes'] });
   }
 
   async update(id: number, updateStoreDto: UpdateStoreDto): Promise<Store> {
