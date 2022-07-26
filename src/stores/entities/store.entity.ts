@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Address } from 'src/addresses/entities/address.entity';
+import { Cloth } from 'src/clothes/entities/cloth.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { Style } from 'src/styles/entities/style.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -42,6 +43,7 @@ export class Store extends BaseEntity {
     cascade: true,
   })
   @JoinTable({
+    name: 'stores_styles',
     joinColumns: [{ name: 'store_id' }],
     inverseJoinColumns: [{ name: 'style_id' }],
   })
@@ -52,10 +54,14 @@ export class Store extends BaseEntity {
     eager: true,
   })
   @JoinTable({
+    name: 'stores_files',
     joinColumns: [{ name: 'store_id' }],
     inverseJoinColumns: [{ name: 'file_id' }]
   })
   thumbnails: FileEntity[];
+
+  @OneToMany(() => Cloth, (clothes) => clothes.store)
+  clothes?: Cloth[];
 
   @ApiProperty()
   @Column({ nullable: true })
