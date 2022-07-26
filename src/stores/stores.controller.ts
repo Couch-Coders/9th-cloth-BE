@@ -20,6 +20,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { infinityPagination } from 'src/utils/infinity-pagination';
 import { CreateClothDto } from 'src/clothes/dto/create-cloth.dto';
+import { StyleEnum } from 'src/styles/styles.enum';
+import { StyleFilterDto } from './dto/style-filter.dto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
@@ -37,16 +39,20 @@ export class StoresController {
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query() styleDto: StyleFilterDto,
   ) {
     if (limit > 25) {
       limit = 25;
     }
 
+    console.log(styleDto.style);
     return infinityPagination(
       await this.storesService.findManyWithPagination({
         page,
-        limit
-      }),
+        limit,
+      },
+        StyleEnum[styleDto.style],
+      ),
       { page, limit },
     );
   }

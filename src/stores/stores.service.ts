@@ -57,8 +57,8 @@ export class StoresService {
     );
   }
 
-  findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Store[]>  {
-    return this.storesRepository.find({
+  async findManyWithPagination(paginationOptions: IPaginationOptions, styleId?: number): Promise<Store[]>  {
+    const paginationData = await this.storesRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
       select: [
@@ -66,6 +66,7 @@ export class StoresService {
         'name',
       ]
     });
+    return (styleId !== undefined) ? paginationData.filter(data => data.styles.some(style => style.id === styleId)) : paginationData;
   }
 
   findOne(name: string): Promise<Store> {
