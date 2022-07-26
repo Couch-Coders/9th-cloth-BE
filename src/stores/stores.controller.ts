@@ -33,11 +33,6 @@ export class StoresController {
     return this.storesService.create(createStoreDto, req.user);
   }
 
-  @Post(':id/cloth')
-  createCloth(@Param('id') storeId: number, @Body() createClothDto: CreateClothDto) {
-    return this.storesService.createCloth(storeId, createClothDto);
-  }
-
   @Get()
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -71,5 +66,19 @@ export class StoresController {
   @UseGuards(SellerGuard)
   softDelete(@Param('id') id: number) {
     return this.storesService.softDelete(id);
+  }
+
+  @Post(':id/clothes')
+  createCloth(@Param('id') storeId: number, @Body() createClothDto: CreateClothDto) {
+    return this.storesService.createCloth(storeId, createClothDto);
+  }
+
+  @Get(':id/clothes')
+  findAllClothes(
+    @Param('id') id: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    return this.storesService.findAllClothes(id, page, limit);
   }
 }

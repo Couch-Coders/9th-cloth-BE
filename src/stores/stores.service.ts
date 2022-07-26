@@ -18,6 +18,7 @@ import { FileEntity } from 'src/files/entities/file.entity';
 import { ClothesService } from 'src/clothes/clothes.service';
 import { CreateClothDto } from 'src/clothes/dto/create-cloth.dto';
 import { Cloth } from 'src/clothes/entities/cloth.entity';
+import { infinityPagination } from 'src/utils/infinity-pagination';
 
 @Injectable()
 export class StoresService {
@@ -56,18 +57,6 @@ export class StoresService {
     );
   }
 
-  async createCloth(storeId: number, createClothDto: CreateClothDto): Promise<Cloth> {
-    createClothDto.store = await this.storesRepository.findOne(storeId);
-    createClothDto.styles = createClothDto.styles.map((style) =>
-      plainToClass(Style, {
-        id: style,
-      }),
-    );
-    const newClothData: Omit<Cloth, 'store'> = await this.clothesService.create(createClothDto);
-    console.log(newClothData);
-    return newClothData;
-  }
-
   findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Store[]>  {
     return this.storesRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
@@ -103,6 +92,30 @@ export class StoresService {
 
   async softDelete(id: number): Promise<void> {
     this.storesRepository.softDelete(id);
+  }
+
+  async createCloth(storeId: number, createClothDto: CreateClothDto): Promise<Cloth> {
+    createClothDto.store = await this.storesRepository.findOne(storeId);
+    createClothDto.styles = createClothDto.styles.map((style) =>
+      plainToClass(Style, {
+        id: style,
+      }),
+    );
+    const newClothData: Cloth = await this.clothesService.create(createClothDto);
+    return plainToClass(Cloth, {
+      id: newClothData.id,
+      styles: newClothData.styles,
+      thumbnail: newClothData.thumbnail,
+    });
+  }
+
+  async findAllClothes(storeId: number, page: number, limit: number) {
+    return infinityPagination(
+      await this.clothesService.findManyWithPagination(storeId, {
+        page, limit
+      }),
+      { page, limit },
+    );
   }
 
   addAddresses(storeDto: CreateStoreDto | UpdateStoreDto): Promise<Address[]> {
