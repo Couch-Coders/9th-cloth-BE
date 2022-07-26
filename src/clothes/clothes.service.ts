@@ -21,11 +21,20 @@ export class ClothesService {
     );
   }
 
-  findManyWithPagination(paginationOptions: IPaginationOptions): Promise<Cloth[]>  {
+  findManyWithPagination(storeId: number, paginationOptions: IPaginationOptions): Promise<Cloth[]>  {
     return this.clothesRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
+      where: {
+        store: {
+          id: storeId,
+        },
+      },
     });
+  }
+
+  findAll(): Promise<Cloth[]> {
+    return this.clothesRepository.find();
   }
 
   findOne(id: string): Promise<Cloth> {
