@@ -37,6 +37,7 @@ export class User extends BaseEntity {
     eager: true,
   })
   @JoinTable({
+    name: 'users_styles',
     joinColumns: [{ name: 'user_id' }],
     inverseJoinColumns: [{ name: 'style_id' }],
   })
