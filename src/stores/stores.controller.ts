@@ -39,19 +39,18 @@ export class StoresController {
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-    @Query() styleDto: StyleFilterDto,
+    @Query('style') style: string,
   ) {
     if (limit > 25) {
       limit = 25;
     }
 
-    console.log(styleDto.style);
     return infinityPagination(
       await this.storesService.findManyWithPagination({
         page,
         limit,
       },
-        StyleEnum[styleDto.style],
+        StyleEnum[style],
       ),
       { page, limit },
     );
