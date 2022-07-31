@@ -16,20 +16,20 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     return this.usersRepository.save(
-      this.usersRepository.create(createUserDto)
+      this.usersRepository.create(createUserDto),
     );
   }
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['styles'] });
+    return this.usersRepository.find();
   }
 
   findOne(id: number): Promise<User> {
-    return this.usersRepository.findOne({ id });
+    return this.usersRepository.findOne({ id }, { relations: ['stores'] });
   }
 
   findBySocialId(socialId: string): Promise<User> {
-    return this.usersRepository.findOne({ where: socialId });
+    return this.usersRepository.findOne({ where: { socialId } });
   }
 
   findByEmail(email: string) {
@@ -39,13 +39,6 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    if (updateUserDto.styles) {
-      updateUserDto.styles = updateUserDto.styles.map(style => 
-        plainToClass(Style, {
-          id: style
-        }
-      ));
-    }
     return this.usersRepository.save(
       this.usersRepository.create({
         id,

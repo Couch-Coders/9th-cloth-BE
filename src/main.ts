@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const configService = app.get(ConfigService);
 
   app.setGlobalPrefix(configService.get('app.apiPrefix'), {
@@ -14,7 +14,13 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('API')
@@ -26,6 +32,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(configService.get('app.port'));
+  await app.listen(configService.get('app.port'), '0.0.0.0');
 }
 bootstrap();

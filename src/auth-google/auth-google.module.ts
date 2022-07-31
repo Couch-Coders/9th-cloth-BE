@@ -5,10 +5,7 @@ import { AuthModule } from '..//auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ConfigModule,
-    AuthModule,
-  ],
+  imports: [ConfigModule, AuthModule],
   controllers: [AuthGoogleController],
   providers: [AuthGoogleService],
   exports: [AuthGoogleService],

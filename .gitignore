@@ -3,6 +3,7 @@
 /node_modules
 /.data
 ormconfig.json
+PULL_REQUEST_TEMPLATE.md
 
 .env
 

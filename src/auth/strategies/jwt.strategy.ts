@@ -5,7 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 
-type JwtPayload = Pick<User, 'id'> & { iat: number; exp: number };
+type JwtPayload = Pick<User, 'id' | 'isSeller'> & { iat: number; exp: number };
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

@@ -1,35 +1,48 @@
-import { Store } from "../../stores/entities/store.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { Style } from "src/styles/entities/style.entity";
+import { Store } from '../../stores/entities/store.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Style } from 'src/styles/entities/style.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryColumn()
+  @ApiProperty()
+  @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   email: string;
 
+  @ApiProperty()
   @Column({ unique: true, nullable: true })
   username: string;
 
-  @OneToMany(() => Store, (store) => store.author)
-  store?: Store;
-
-  @ManyToMany(() => Style, (styles) => styles.id)
-  @JoinTable({
-    joinColumns:[{name: "user_id"}],
-    inverseJoinColumns:[{name: "style_id"}],
+  @OneToMany(() => Store, (stores) => stores.author, {
+    cascade: true,
+    onDelete: 'CASCADE',
   })
-  styles?: Style[];
+  stores?: Store[];
 
+  @ApiProperty()
   @Column({ nullable: true })
-  profile: string;
+  picture: string;
 
+  @ApiProperty()
   @Column({ type: 'boolean', default: false, nullable: true })
   isSeller: boolean;
 
-  @Column({ nullable: true })
+  @ApiProperty()
+  @Column({ unique: true, nullable: true })
   socialId: string;
 
   @CreateDateColumn()
