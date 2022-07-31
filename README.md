@@ -1,5 +1,5 @@
 # **나의 의류 매장 추천 플랫폼 (BE)**
-## 💡 배포 주소 - https://cloth-service.herokuapp.com
+## 💡 배포 주소 - https://clothes-fe.vercel.app/
 
 ## 📚 프로젝트 기획 의도
 ### 의류 매장 자영업자들이 쉽게 자신의 매장을 홍보하고 사용자는 내 취향에 맞는 매장을 찾을 수 있도록 도움을 주는 프로젝트
@@ -90,4 +90,7 @@
 [API 명세서](https://pond-moustache-d8c.notion.site/API-4f2004b8305f45a3b67190914a831eea)
 <br>
 
-[Swagger API 문서](https://cloth-service.herokuapp.com/docs/) <br>
+[Swagger API 문서](https://cloth-service.herokuapp.com/docs/)
+<br>
+
+[Cloth FE 레포지토리](https://github.com/Couch-Coders/9th-cloth-FE)
